@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .feedback-box {
+      width: 350px;
+      padding: 25px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+    .feedback-box h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    input:focus, textarea:focus {
+      border-color: #007BFF;
+      box-shadow: 0 0 5px rgba(0,123,255,0.5);
+      outline: none;
+    }
+    button {
+      background: #007BFF;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    #response {
+      margin-top: 12px;
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+    #response.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    #response.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #6c757d;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="feedback-box">
+    <h3>💬 Send us Feedback</h3>
+    <form id="feedbackForm">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Gmail" required>
+      <textarea name="message" placeholder="Your Feedback..." required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+
+    <!-- Back Button -->
+    <a href="./../index.php" class="back-btn">⬅ Back to Home</a>
+  </div>
+
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var formData = new FormData(this);
+      
+      fetch("save_feedback.php", {
+        method: "POST",
+        body: formData
+      }).then(res => res.text())
+        .then(data => {
+          let response = document.getElementById("response");
+          response.style.display = "block";
+          if (data.includes("✅")) {
+            response.className = "success";
+          } else {
+            response.className = "error";
+          }
+          response.innerHTML = data;
+          document.getElementById("feedbackForm").reset();
+        });
+    });
+  </script>
+
+</body>
+</html>
