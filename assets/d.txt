@@ -1,0 +1,16 @@
+<?php
+    $server = "localhost";
+   
+    $user = "u235295839_codesteal";
+    $password = "Ssdhdd_47";
+    $db = "u235295839_sms";
+    
+    $conn = mysqli_connect($server, $user, $password, $db);
+
+    if (!$conn) {
+        header('Location: ../errors/error.html');
+        exit();
+    }
+
+
+?>
